@@ -237,7 +237,24 @@ body{
 #cinematic{
   z-index:10000; /* HARUS LEBIH TINGGI */
 }
+.cursor{
+  display:inline-block;
+  color:#d4af37;
+  margin-left:4px;
+  animation:blink 1s infinite;
+}
 
+@keyframes blink{
+  0%,50%,100%{opacity:1;}
+  25%,75%{opacity:0;}
+}
+
+.cinema-time{
+  margin-top:12px;
+  font-size:1.1rem;
+  color:#fff;
+  letter-spacing:.5px;
+}
 /* LIGHT SWEEP */
 .light-sweep{
   position:absolute;
@@ -988,8 +1005,8 @@ footer{
   <h1>Firman & Salsabila</h1>
   <p>26 April 2026</p>
   <p class="cinema-time">
-  ✨ Akad & Resepsi ✨<br>
-  <strong>08:00 – 10:00 WIB</strong>
+  <span id="typing-text"></span>
+  <span class="cursor">|</span>
 </p>
 </div>
   
@@ -1338,7 +1355,7 @@ openBtn.addEventListener('click', () => {
     cover.style.display = 'none';
 
     cinematic.classList.add('show');
-
+      setTimeout(typeEffect, 2500);
     // SOUND CINEMATIC (opsional)
     // document.getElementById('clickSound')?.play();
 
@@ -1448,6 +1465,22 @@ window.addEventListener('scroll', ()=>{
 
   glow.style.transform = `translateY(${progress * 200}px)`;
 });
+  const text = "Mulai acara pukul\n08:00 – 10:00 WIB";
+const typingEl = document.getElementById("typing-text");
+
+let i = 0;
+
+function typeEffect(){
+  if(i < text.length){
+    if(text.charAt(i) === "\n"){
+      typingEl.innerHTML += "<br>";
+    } else {
+      typingEl.innerHTML += text.charAt(i);
+    }
+    i++;
+    setTimeout(typeEffect, 50); // kecepatan ketik
+  }
+}
 </script>
 
 </body>

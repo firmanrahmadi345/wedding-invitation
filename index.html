@@ -72,6 +72,45 @@ body{
   transition:1.2s ease;
 }
 
+  /* baru */
+  .typing-letter{
+  display:inline-block;
+  opacity:0;
+  transform:scale(0.6) translateY(10px);
+  color:#fff;
+  text-shadow:
+    0 0 5px rgba(255,255,255,.4),
+    0 0 10px rgba(212,175,55,.6),
+    0 0 20px rgba(212,175,55,.5);
+  animation:letterIn .5s ease forwards;
+}
+
+@keyframes letterIn{
+  to{
+    opacity:1;
+    transform:scale(1) translateY(0);
+  }
+}
+
+/* glow emas lebih kuat di angka */
+.typing-letter.strong{
+  color:#d4af37;
+  text-shadow:
+    0 0 8px rgba(212,175,55,.9),
+    0 0 18px rgba(212,175,55,.8),
+    0 0 30px rgba(212,175,55,.6);
+}
+
+/* container cinematic */
+.cinema-time{
+  margin-top:15px;
+  font-size:1.2rem;
+  letter-spacing:.6px;
+  line-height:1.6;
+}
+  /* tutup*/
+  
+
 #cinematic.show{
   opacity:1;
   pointer-events:auto;
@@ -1355,7 +1394,7 @@ openBtn.addEventListener('click', () => {
     cover.style.display = 'none';
 
     cinematic.classList.add('show');
-      setTimeout(typeEffect, 2500);
+      setTimeout(typeEffect,3000);
     // SOUND CINEMATIC (opsional)
     // document.getElementById('clickSound')?.play();
 
@@ -1469,16 +1508,69 @@ window.addEventListener('scroll', ()=>{
 const typingEl = document.getElementById("typing-text");
 
 let i = 0;
+  
+  const typingSound = new Audio('music/typing.mp3');
+typingSound.volume = 0.2; // biar tidak terlalu keras
+const sound = new Audio('typing.mp3');
 
 function typeEffect(){
   if(i < text.length){
-    if(text.charAt(i) === "\n"){
+    function typeEffect(){
+  if(i < text.length){
+
+    const char = text.charAt(i);
+
+    // 🔊 MAINKAN SOUND SETIAP HURUF
+    typingSound.currentTime = 0;
+    typingSound.play().catch(()=>{});
+
+    if(char === "\n"){
       typingEl.innerHTML += "<br>";
     } else {
-      typingEl.innerHTML += text.charAt(i);
+      const span = document.createElement("span");
+      span.className = "typing-letter";
+
+      if(/[0-9WIB:-]/.test(char)){
+        span.classList.add("strong");
+      }
+
+      span.textContent = char;
+      typingEl.appendChild(span);
     }
+
     i++;
-    setTimeout(typeEffect, 50); // kecepatan ketik
+    setTimeout(typeEffect, 45);
+  }
+}
+
+   if(i % 2 === 0){
+  typingSound.currentTime = 0;
+  typingSound.play().catch(()=>{});
+}
+  }
+}
+function typeEffect(){
+  if(i < text.length){
+    
+    const char = text.charAt(i);
+
+    if(char === "\n"){
+      typingEl.innerHTML += "<br>";
+    } else {
+      const span = document.createElement("span");
+      span.className = "typing-letter";
+
+      // khusus angka & WIB jadi emas
+      if(/[0-9WIB:-]/.test(char)){
+        span.classList.add("strong");
+      }
+
+      span.textContent = char;
+      typingEl.appendChild(span);
+    }
+
+    i++;
+    setTimeout(typeEffect, 45); // lebih smooth
   }
 }
 </script>
